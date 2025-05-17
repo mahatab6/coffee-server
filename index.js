@@ -22,6 +22,7 @@ async function run() {
     
     const database = client.db("coffee");
     const coffeesCollection = database.collection("coffee");
+    const userCollection = database.collection("user");
 
     app.get('/coffees', async (req, res) => {
       const result = await coffeesCollection.find().toArray();
@@ -60,6 +61,14 @@ async function run() {
       };
       const result = await coffeesCollection.updateOne(filter, update,options);
       res.send(result);
+    })
+
+    // user related api
+
+    app.post('/users', async(req, res) => {
+      const newUser =req.body;
+      const result = await userCollection.insertOne(newUser)
+      res.send(result)
     })
 
     await client.connect();
